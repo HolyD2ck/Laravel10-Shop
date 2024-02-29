@@ -123,11 +123,15 @@ class ProductsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Products $products)
+    public function destroy($id)
     {
         try {
+            $products = Products::find($id);
             $products->delete();
-            @unlink(public_path().$products->Фото);
+            if (file_exists(public_path().$products->Фото)) {
+                @unlink(public_path().$products->Фото);
+            }
+            
             return redirect()->route('products.index');
          
         }
